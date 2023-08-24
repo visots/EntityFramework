@@ -14,7 +14,7 @@ namespace Task_25_2_4
 
         public AppContext()
         {
-            Database.EnsureCreated();
+            //Database.EnsureCreated();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

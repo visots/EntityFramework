@@ -57,7 +57,7 @@ namespace Task_25_2_4
         /// <param name="newAuthor">Новый автор</param>
         /// <param name="newGenre">Новый жанр</param>
         /// <exception cref="Exception"></exception>
-        public void UpdateBook(int id, string newName, string newReleaseDate, string newAuthor, string newGenre)
+        public void UpdateBook(int id, string newName, DateTime newReleaseDate, string newAuthor, string newGenre)
         {
             Book book = db.Books.Where(b => b.Id == id).FirstOrDefault();
 
@@ -78,7 +78,7 @@ namespace Task_25_2_4
         /// <param name="releaseDate">Дата выпуска</param>
         /// <param name="author">Автор</param>
         /// <param name="genre">Жанр</param>
-        public void AddBook(string name, string releaseDate, string author, string genre)
+        public void AddBook(string name, DateTime releaseDate, string author, string genre)
         {
             Book book = new Book()
             {
@@ -88,7 +88,7 @@ namespace Task_25_2_4
                 Genre = genre
             };
 
-            if (db.Books.Select(b => book) is null)
+            if (!db.Books.Contains(book))
             {
                 db.Books.Add(book);
                 db.SaveChanges();
@@ -103,7 +103,7 @@ namespace Task_25_2_4
         /// </summary>
         /// <param name="id">Ид книги</param>
         /// <param name="newReleaseDate">Новая дата выпуска</param>
-        public void UpdateReleaseDate(int id, string newReleaseDate)
+        public void UpdateReleaseDate(int id, DateTime newReleaseDate)
         {
             Book book = db.Books.Where(b => b.Id == id).FirstOrDefault();
 
@@ -119,9 +119,9 @@ namespace Task_25_2_4
         /// <param name="genre">Жанр</param>
         /// <param name="period"></param>
         /// <returns>Список книг</returns>
-        public List<Book> GetListByGenreAndPeriod(string genre, string period)
+        public List<Book> GetListByGenreAndPeriod(string genre, DateTime dateFrom, DateTime dateTo)
         {
-            return null;
+            return db.Books.Where(b => b.Genre == genre && (b.ReleaseDate >=dateFrom && b.ReleaseDate<=dateTo)).AsNoTracking().ToList();
         }
 
         /// <summary>
@@ -144,29 +144,26 @@ namespace Task_25_2_4
         /// <param name="author">Автор</param>
         /// <param name="name">Название</param>
         /// <returns></returns>
-        public bool HasBook(string author, string name) => db.Books.Where(b=>b.Author ==author && b.Name ==name).Any();
+        public bool HasBook(string author, string name) => db.Books.Where(b=>b.Author ==author && b.Name ==name).AsNoTracking().Any();
 
 
         /// <summary>
         /// Получение последней вышедшей книги
         /// </summary>
         /// <returns></returns>
-        public Book GetLastReleased()
-        {
-            return null;
-        }
+        public Book GetLastReleased() => db.Books.OrderByDescending(b => b.ReleaseDate).FirstOrDefault();
 
         /// <summary>
         /// Получение списка всех книг, отсортированного в алфавитном порядке по названию.
         /// </summary>
         /// <returns>Cписок всех книг, отсортированный в алфавитном порядке по названию</returns>
-        public List<Book> GetAllByNameOrder() => db.Books.OrderBy(b => b.Name).ToList();
+        public List<Book> GetAllByNameOrder() => db.Books.OrderBy(b => b.Name).AsNoTracking().ToList();
 
         /// <summary>
         /// Получение списка всех книг, отсортированного в порядке убывания года их выхода.
         /// </summary>
         /// <returns>Cписок всех книг, отсортированный в порядке убывания года их выхода.</returns>
-        public List<Book> GetAllByReleaseDateOrder() => db.Books.OrderByDescending(b => b.ReleaseDate).ToList();
+        public List<Book> GetAllByReleaseDateOrder() => db.Books.OrderByDescending(b => b.ReleaseDate).AsNoTracking().ToList();
 
     }
 }
