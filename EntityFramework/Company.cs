@@ -6,17 +6,14 @@ using System.Threading.Tasks;
 
 namespace EntityFramework
 {
-    public class User
+    public class Company
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        //public string Email { get; set; }
-        public string Role { get; set; }
-
-        // Внешний ключ
-        public int CompanyId { get; set; }
+        public string City { get;set; }
+        
+        public string Type { get; set; }
         // Навигационное свойство
-        public Company Company { get; set; }
-
+        public List<User> Users { get; set; } = new List<User>();
     }
 }
