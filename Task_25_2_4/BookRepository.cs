@@ -31,6 +31,8 @@ namespace Task_25_2_4
         /// <returns>Объект книги</returns>
         public Book GetBook(int id) => db.Books.Where(book => book.Id == id).FirstOrDefault();
 
+        public Book GetBook(string name) => db.Books.Where(book => book.Name == name).FirstOrDefault();
+
         /// <summary>
         /// Удаление книги
         /// </summary>

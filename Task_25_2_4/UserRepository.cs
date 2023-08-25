@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -89,6 +90,37 @@ namespace Task_25_2_4
 
             db.Users.Add(user);
             db.SaveChanges();
+        }
+
+        public void ReserveBook(User user, Book book)
+        {
+            if (book != null && user != null)
+            {
+                user.Books.Add(book);
+                db.SaveChanges();
+            }
+            else
+                throw new Exception("Не найден пользователь или книга");
+
+        }
+
+        public bool HasBook(User user, Book book)
+        {
+
+            if (book != null && user != null)
+            {
+                return db.Users.Where(u => u.Equals(user)).Select(u => u.Books.Contains(book)).FirstOrDefault();
+            }
+            return false;
+        }
+
+        public int GetBooksCount(User user)
+        {
+            if (user != null)
+            {
+                return db.Users.Where(u => u.Equals(user)).Select(u => u.Books.Count).FirstOrDefault();
+            }
+            return 0;
         }
     }
 }

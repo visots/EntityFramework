@@ -13,5 +13,7 @@ namespace Task_25_2_4
         public string Name { get; set; }
 
         public string Email { get; set; }
+
+        public List<Book> Books { get; set; } = new List<Book>();
     }
 }
